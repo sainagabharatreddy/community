@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 router.get('/posts', async (req, res) => {
     try {
-        const posts = await Post.find().populate('createdBy').populate('likes').populate('comments').sort({'createdAt': -1});
+        const posts = await Post.find().populate('createdBy').populate('likes').populate({path:'comments' , populate:{path:'createdBy' , model:'User'}}).sort({'createdAt': -1});
         res.status(200).json(posts);
     } catch (e) {
         res.status(500).json({ message: e.message });
